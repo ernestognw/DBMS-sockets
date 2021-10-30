@@ -1,34 +1,78 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <unistd.h>
 
-struct alumno
+#include <unistd.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <syslog.h>
+
+#define colSize 20
+
+typedef struct alumno
 {
-    char nombre, apellido;
+    char nombre[colSize], apellido[colSize], carrera[colSize], semestre[colSize], matricula[colSize];
+} Alumno;
+
+struct calificaciones
+{
+
+    char materia[colSize], matricula[colSize], calificacion[colSize];
 };
 
-struct grado {
+//crear socket para recibir conexiones
 
-    char semestre, carrera;
+//creo el cliente que se conecta a ese deamon
 
-};
+// que entre el servidor y cliente se empiecen a conectar
 
-int  main(){
+// tengo que definir bien el protocolo de comunicación
+
+int main()
+{
+
+    printf("Starting daemonize\n");
+    daemonize();
 
     struct alumno a;
-    struct grado g;
+    struct calificaciones c;
 
     FILE *archivoAlumno;
-    FILE *archivoGrado;
+    FILE *archivoCalificaciones;
 
-// Create an empty binary file for writing.
-    archivoAlumno = fopen("testAlumno.bin","wb");
-    if (!archivoAlumno){
-       printf("Error! opening file");
-       exit(1);
-   }
-   // ciclo para que 
+    archivoAlumno = fopen("alumno.bin", "wb");
 
+    // ESTO ES PARA INICIAR EL ARCHIVO alumno.bin ---> Ya ustedes hacen en insert y demás
+    strcpy(a.nombre, "Karina");
+    strcpy(a.apellido, "Amador");
+    strcpy(a.carrera, "ITC");
+    strcpy(a.semestre, "septimo");
+    strcpy(a.matricula, "1");
+    fwrite(&a, sizeof(struct alumno), 1, archivoAlumno);
+    fclose(archivoAlumno);
 
+    Alumno *al;
+    al = (Alumno *)malloc(sizeof(Alumno));
+    FILE *fp;
+    if (access("alumno.bin", F_OK) != 0)
+    {
+        printf("There are no entries. \n");
+    }
+    fp = fopen("alumno.bin", "rb");
+    while (fread(al, sizeof(Alumno), 1, fp))
 
-return 0;
+    {
+        printf("=========== ALUMNOS ===========\n");
+        printf("- %s ", al->nombre);
+        printf("%s ", al->apellido);
+        printf("%s ", al->carrera);
+        printf("%s ", al->semestre);
+        printf("%s ", al->matricula);
+    }
+    fclose(archivoAlumno);
+
+    return 0;
 }
