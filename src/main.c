@@ -107,28 +107,71 @@ void selectAll()
 //Cambiar structs
 void deleteEntry(char *name)
 {
-    Entry *e;
-    e = (Entry *)malloc(sizeof(Entry));
-    FILE *fp;
-    FILE *temp;
-    fp = fopen("myentries.bin", "rb");
-    temp = fopen("tmp.bin", "wb");
-    while (fread(e, sizeof(Entry), 1, fp))
+    int op;
+    printf("Elija la tabla para hacer delete \n 1) Alumnos \n 2) Calificaciones");
+    scanf("%d", &op);
+    switch(op)
     {
-        if (strcmp(e->name, name) == 0)
+        case 1:
+        printf("Ingrese la matricula que quiera eliminar:\n");
+        char *id = malloc(1024);
+        scanf("%s", id);
+        Alumno *a;
+        a = (Alumno *)malloc(sizeof(Alumno));
+        FILE *fp;
+        FILE *temp;
+         fp = fopen("alumno.bin", "rb");
+         temp = fopen("tmp.bin", "wb");
+         while (fread(a, sizeof(Alumno), 1, fp))
+         {
+        if (strcmp(a->matricula, id) == 0)
         {
-            printf("A record with requested name found and deleted.\n\n");
+            printf("The row has been deleted.\n\n");
         }
         else
         {
-            fwrite(e, sizeof(Entry), 1, temp);
+            fwrite(a, sizeof(Calificaciones), 1, temp);
         }
     }
     fclose(fp);
     fclose(temp);
 
-    remove("myentries.bin");
-    rename("tmp.bin", "myentries.bin");
+    remove("alumno.bin");
+    rename("tmp.bin", "alumno.bin");
+
+        break;
+
+        case 2:
+        printf("Ingrese la matricula que quiera eliminar:\n");
+        char *id = malloc(1024);
+        scanf("%s", id);
+        Calificaciones *c;
+        c = (Calificaciones *)malloc(sizeof(Calificaciones));
+        FILE *fp;
+        FILE *temp;
+         fp = fopen("calificaciones.bin", "rb");
+         temp = fopen("tmp.bin", "wb");
+         while (fread(c, sizeof(Calificaciones), 1, fp))
+         {
+        if (strcmp(c->matricula, id) == 0)
+        {
+            printf("The row has been deleted.\n\n");
+        }
+        else
+        {
+            fwrite(a, sizeof(Calificaciones), 1, temp);
+        }
+    }
+    fclose(fp);
+    fclose(temp);
+
+    remove("calificaciones.bin");
+    rename("tmp.bin", "calificaciones.bin");
+
+        break;
+    }
+   
+   
 }
 
 int main()
