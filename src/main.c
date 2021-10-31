@@ -17,11 +17,11 @@ typedef struct alumno
     char nombre[colSize], apellido[colSize], carrera[colSize], semestre[colSize], matricula[colSize];
 } Alumno;
 
-struct calificaciones
+typedef struct calificaciones
 {
 
     char materia[colSize], matricula[colSize], calificacion[colSize];
-};
+} Calificaciones;
 
 //crear socket para recibir conexiones
 
@@ -30,6 +30,106 @@ struct calificaciones
 // que entre el servidor y cliente se empiecen a conectar
 
 // tengo que definir bien el protocolo de comunicación
+
+//------------------------------------------------------------
+//hacer otra funcion para la otra tabla
+//acabar el switch con los otros casos
+void selectCondAlumn(char *cond)
+{
+    int op;
+    char *aux;
+    FILE *fp;
+    fp = fopen("alumno.bin", "rb");
+    printf("Elija la columna para hacer la condicion \n 1) Nombre \n 2) Apellido \n 3) Carrera \n 4) Semestre \n 5) Matricula");
+    scanf("%d", &op);
+
+    switch (op)
+    {
+    case 1:
+        printf("Teclee el nombre");
+        scanf("%s", &aux);
+        Alumno *a;
+        a = (Alumno *)malloc(sizeof(Alumno));
+        while (fread(a, sizeof(Alumno), 1, fp))
+        {
+            if (strcpy(a->nombre, aux) == 0)
+            {
+                printf("Nombre: %s Apellido: %s Carrera: %s Semestre: %s Matricula: %s \n", a->nombre, a->apellido, a->carrera, a->semestre, a->matricula);
+            }
+        }
+
+        break;
+
+    default:
+        break;
+    }
+    fclose(fp);
+}
+
+void selectAll()
+{
+    int op;
+    printf("Elija la tabla para imprimir \n 1) Alumnos \n 2) Calificaciones");
+    scanf("%d", &op);
+    switch (op)
+    {
+    case 1:
+        Alumno *a;
+        a = (Alumno *)malloc(sizeof(Alumno));
+        int value;
+
+        FILE *fp;
+        fp = fopen("alumno.bin", "rb");
+        while (fread(a, sizeof(Alumno), 1, fp))
+        {
+            printf("Nombre: %s Apellido: %s Carrera: %s Semestre: %s Matricula: %s \n", a->nombre, a->apellido, a->carrera, a->semestre, a->matricula);
+        }
+        fclose(fp);
+        break;
+
+    case 2:
+        Calificaciones *c;
+        c = (Calificaciones *)malloc(sizeof(Calificaciones));
+        int value;
+
+        FILE *fp;
+        fp = fopen("alumno.bin", "rb");
+        while (fread(c, sizeof(Calificaciones), 1, fp))
+        {
+            printf("Materia: %s Matricula: %s Calificacion: %s \n", c->materia, c->matricula, c->calificacion);
+        }
+        fclose(fp);
+        break;
+    }
+}
+
+//----------------------------------------------
+//Cambiar structs
+void deleteEntry(char *name)
+{
+    Entry *e;
+    e = (Entry *)malloc(sizeof(Entry));
+    FILE *fp;
+    FILE *temp;
+    fp = fopen("myentries.bin", "rb");
+    temp = fopen("tmp.bin", "wb");
+    while (fread(e, sizeof(Entry), 1, fp))
+    {
+        if (strcmp(e->name, name) == 0)
+        {
+            printf("A record with requested name found and deleted.\n\n");
+        }
+        else
+        {
+            fwrite(e, sizeof(Entry), 1, temp);
+        }
+    }
+    fclose(fp);
+    fclose(temp);
+
+    remove("myentries.bin");
+    rename("tmp.bin", "myentries.bin");
+}
 
 int main()
 {
