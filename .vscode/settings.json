@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "*.hcl": "tf",
+    "stdio.h": "c",
+    "unistd.h": "c",
+    "stat.h": "c",
+    "syslog.h": "c",
+    "string.h": "c"
+  }
+}

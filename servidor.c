@@ -8,10 +8,13 @@
 #include <arpa/inet.h> //inet_addr
 #include <unistd.h>    //write
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <syslog.h>
+
 
 static void daemonize()
 {
@@ -50,7 +53,7 @@ static void daemonize()
 
 int main(int argc, char *argv[])
 {
-    deamonize();
+    daemonize();
     int socket_desc, client_sock, c, read_size, read_size2;
     struct sockaddr_in server, client;
     char client_message[2000];
@@ -132,7 +135,7 @@ int main(int argc, char *argv[])
             //3.2.1 Sumar al contador
             contador++;
             //3.2.2 Checar si el contador ya se paso
-            if (contador = 3)
+            if (contador == 3)
             {
                 return 1;
 
