@@ -129,6 +129,7 @@ int main(int argc, char *argv[])
 
     if (authenticated)
     {
+        // TODO: Connect with DBMS and send messages
     }
 
     // After chatting close the socket
