@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
+//#include <unistd.h>
 
-#include <unistd.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+//#include <unistd.h>
+//#include <signal.h>
+//#include <sys/types.h>
+////#include <sys/stat.h>
 //#include <syslog.h>
 
 #define colSize 20
@@ -184,7 +184,7 @@ void selectAll()
     case 2:;
         Calificaciones *c;
         c = (Calificaciones *)malloc(sizeof(Calificaciones));
-        fp = fopen("alumno.bin", "rb");
+        fp = fopen("calificaciones.bin", "rb");
         while (fread(c, sizeof(Calificaciones), 1, fp))
         {
             printf("Materia: %s Matricula: %s Calificacion: %s \n", c->materia, c->matricula, c->calificacion);
@@ -264,15 +264,18 @@ void insert(){
     int op;
     FILE *fp;
     char *p = malloc(1024);
+    Alumno *a;
+    a = (Alumno*)malloc(sizeof(Alumno));
+    Calificaciones *c;
+    c = (Calificaciones*)malloc(sizeof(Calificaciones));
 
     printf("Elija la tabla para hacer insert \n 1) Alumnos \n 2) Calificaciones \n");
-    scanf("%d", op);
+    scanf("%d", &op);
     switch(op)
     {
-        case 1:;
-            Alumno *a;
-            a = (Alumno*)malloc(sizeof(Alumno));
-            fp = fopen("estudiante.bin", "ab");
+        case 1:
+            
+            fp = fopen("alumno.bin", "ab");
 
 
             printf("Enter Student name\n");
@@ -307,9 +310,8 @@ void insert(){
 
         break;
 
-        case 2:;
-            Calificaciones *c;
-            c = (Calificaciones*)malloc(sizeof(Calificaciones));
+        case 2:
+            printf("Holi wilis");
             fp = fopen("calificaciones.bin", "ab");
 
 
@@ -385,7 +387,7 @@ int main()
 
     while (menu != 0)
     {
-        printf("Menu: \n 1) Select all \n 2) Select con condicion \n 3) Insertar \n 4) Borrar \n 5) Join \n 6) Salir \n");
+        printf("Menu: \n 1) Select all \n 2) Select con condicion \n 3) Insertar \n 4) Borrar \n 5) Join \n 0) Salir \n");
         scanf("%d", &menu);
         switch (menu)
         {
