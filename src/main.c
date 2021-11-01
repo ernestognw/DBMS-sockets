@@ -39,6 +39,7 @@ void selectCondCalif()
     int op;
     char *aux;
     FILE *fp;
+    Calificaciones *c;
     fp = fopen("calificaciones.bin", "rb");
     printf("Elija la columna para hacer la condicion \n 1) Materia \n 2) Matricula \n 3) Calificacion \n");
     scanf("%d", &op);
@@ -47,8 +48,8 @@ void selectCondCalif()
     {
     case 1:
         printf("Teclee la materia");
-        scanf("%s", &aux);
-        Calificaciones *c;
+        scanf("%s", aux);
+
         c = (Calificaciones *)malloc(sizeof(Calificaciones));
         while (fread(c, sizeof(Calificaciones), 1, fp))
         {
@@ -60,8 +61,7 @@ void selectCondCalif()
         break;
     case 2:
         printf("Teclee la matricula");
-        scanf("%s", &aux);
-        Calificaciones *c;
+        scanf("%s", aux);
         c = (Calificaciones *)malloc(sizeof(Calificaciones));
         while (fread(c, sizeof(Calificaciones), 1, fp))
         {
@@ -73,8 +73,7 @@ void selectCondCalif()
         break;
     case 3:
         printf("Teclee la calificacion");
-        scanf("%s", &aux);
-        Calificaciones *c;
+        scanf("%s", aux);
         c = (Calificaciones *)malloc(sizeof(Calificaciones));
         while (fread(c, sizeof(Calificaciones), 1, fp))
         {
@@ -92,6 +91,7 @@ void selectCondAlumn()
     int op;
     char *aux;
     FILE *fp;
+    Alumno *a;
     fp = fopen("alumno.bin", "rb");
     printf("Elija la columna para hacer la condicion \n 1) Nombre \n 2) Apellido \n 3) Carrera \n 4) Semestre \n 5) Matricula \n");
     scanf("%d", &op);
@@ -100,8 +100,7 @@ void selectCondAlumn()
     {
     case 1:
         printf("Teclee el nombre");
-        scanf("%s", &aux);
-        Alumno *a;
+        scanf("%s", aux);
         a = (Alumno *)malloc(sizeof(Alumno));
         while (fread(a, sizeof(Alumno), 1, fp))
         {
@@ -113,8 +112,7 @@ void selectCondAlumn()
         break;
     case 2:
         printf("Teclee el apellido");
-        scanf("%s", &aux);
-        Alumno *a;
+        scanf("%s", aux);
         a = (Alumno *)malloc(sizeof(Alumno));
         while (fread(a, sizeof(Alumno), 1, fp))
         {
@@ -126,8 +124,7 @@ void selectCondAlumn()
         break;
     case 3:
         printf("Teclee el carrera");
-        scanf("%s", &aux);
-        Alumno *a;
+        scanf("%s", aux);
         a = (Alumno *)malloc(sizeof(Alumno));
         while (fread(a, sizeof(Alumno), 1, fp))
         {
@@ -139,8 +136,7 @@ void selectCondAlumn()
         break;
     case 4:
         printf("Teclee el semestre");
-        scanf("%s", &aux);
-        Alumno *a;
+        scanf("%s", aux);
         a = (Alumno *)malloc(sizeof(Alumno));
         while (fread(a, sizeof(Alumno), 1, fp))
         {
@@ -152,8 +148,7 @@ void selectCondAlumn()
         break;
     case 5:
         printf("Teclee el matricula");
-        scanf("%s", &aux);
-        Alumno *a;
+        scanf("%s", aux);
         a = (Alumno *)malloc(sizeof(Alumno));
         while (fread(a, sizeof(Alumno), 1, fp))
         {
@@ -170,16 +165,14 @@ void selectCondAlumn()
 void selectAll()
 {
     int op;
+    FILE *fp;
     printf("Elija la tabla para imprimir \n 1) Alumnos \n 2) Calificaciones \n");
     scanf("%d", &op);
     switch (op)
     {
-    case 1:
+    case 1:;
         Alumno *a;
         a = (Alumno *)malloc(sizeof(Alumno));
-        int value;
-
-        FILE *fp;
         fp = fopen("alumno.bin", "rb");
         while (fread(a, sizeof(Alumno), 1, fp))
         {
@@ -188,12 +181,9 @@ void selectAll()
         fclose(fp);
         break;
 
-    case 2:
+    case 2:;
         Calificaciones *c;
         c = (Calificaciones *)malloc(sizeof(Calificaciones));
-        int value;
-
-        FILE *fp;
         fp = fopen("alumno.bin", "rb");
         while (fread(c, sizeof(Calificaciones), 1, fp))
         {
@@ -207,18 +197,19 @@ void selectAll()
 void deleteEntry()
 {
     int op;
+    char *id = malloc(1024);
+    FILE *fp;
+    FILE *temp;
     printf("Elija la tabla para hacer delete \n 1) Alumnos \n 2) Calificaciones \n");
     scanf("%d", &op);
     switch (op)
     {
     case 1:
         printf("Ingrese la matricula que quiera eliminar:\n");
-        char *id = malloc(1024);
+
         scanf("%s", id);
         Alumno *a;
         a = (Alumno *)malloc(sizeof(Alumno));
-        FILE *fp;
-        FILE *temp;
         fp = fopen("alumno.bin", "rb");
         temp = fopen("tmp.bin", "wb");
         while (fread(a, sizeof(Alumno), 1, fp))
@@ -242,12 +233,10 @@ void deleteEntry()
 
     case 2:
         printf("Ingrese la matricula que quiera eliminar:\n");
-        char *id = malloc(1024);
         scanf("%s", id);
         Calificaciones *c;
         c = (Calificaciones *)malloc(sizeof(Calificaciones));
-        FILE *fp;
-        FILE *temp;
+
         fp = fopen("calificaciones.bin", "rb");
         temp = fopen("tmp.bin", "wb");
         while (fread(c, sizeof(Calificaciones), 1, fp))
@@ -273,13 +262,13 @@ void deleteEntry()
 
 int main()
 {
-
+    /*
     printf("Starting daemonize\n");
     daemonize();
-
+    
     struct alumno a;
     struct calificaciones c;
-
+    */
     FILE *archivoAlumno;
     FILE *archivoCalificaciones;
 
