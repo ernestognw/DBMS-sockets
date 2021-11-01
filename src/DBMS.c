@@ -2,13 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-//#include <unistd.h>
-
-//#include <unistd.h>
-//#include <signal.h>
-//#include <sys/types.h>
-////#include <sys/stat.h>
-//#include <syslog.h>
 
 #define colSize 20
 
@@ -19,21 +12,9 @@ typedef struct alumno
 
 typedef struct calificaciones
 {
-
     char materia[colSize], matricula[colSize], calificacion[colSize];
 } Calificaciones;
 
-//crear socket para recibir conexiones
-
-//creo el cliente que se conecta a ese deamon
-
-// que entre el servidor y cliente se empiecen a conectar
-
-// tengo que definir bien el protocolo de comunicación
-
-//------------------------------------------------------------
-//hacer otra funcion para la otra tabla
-//acabar el switch con los otros casos
 void selectCondCalif()
 {
     int op;
@@ -107,7 +88,7 @@ void selectCondAlumn()
             if (strcmp(a->nombre, aux) == 0)
             {
                 printf("Nombre: %s Apellido: %s Carrera: %s Semestre: %s Matricula: %s \n", a->nombre, a->apellido, a->carrera, a->semestre, a->matricula);
-            } 
+            }
         }
         break;
     case 2:
@@ -309,12 +290,12 @@ void insert()
 
         break;
 
-        case 2:
-            fp = fopen("calificaciones.bin", "ab");
-            printf("Enter Course name\n");
-            scanf("%s", p);
-            strcpy(c->materia, p);
-            fflush(stdin);
+    case 2:
+        fp = fopen("calificaciones.bin", "ab");
+        printf("Enter Course name\n");
+        scanf("%s", p);
+        strcpy(c->materia, p);
+        fflush(stdin);
 
         printf("Enter Course name\n");
         scanf("%s", p);
@@ -341,47 +322,8 @@ void insert()
 
 int main()
 {
-    /*
-    printf("Starting daemonize\n");
-    daemonize();
-    
-    struct alumno a;
-    struct calificaciones c;
-    */
     FILE *archivoAlumno;
     FILE *archivoCalificaciones;
-
-    //archivoAlumno = fopen("alumno.bin", "wb");
-    /*
-    // ESTO ES PARA INICIAR EL ARCHIVO alumno.bin ---> Ya ustedes hacen en insert y demás
-    strcpy(a.nombre, "Karina");
-    strcpy(a.apellido, "Amador");
-    strcpy(a.carrera, "ITC");
-    strcpy(a.semestre, "septimo");
-    strcpy(a.matricula, "1");
-    fwrite(&a, sizeof(struct alumno), 1, archivoAlumno);
-    fclose(archivoAlumno);
-
-    Alumno *al;
-    al = (Alumno *)malloc(sizeof(Alumno));
-    FILE *fp;
-    if (access("alumno.bin", F_OK) != 0)
-    {
-        printf("There are no entries. \n");
-    }
-    fp = fopen("alumno.bin", "rb");
-    while (fread(al, sizeof(Alumno), 1, fp))
-
-    {
-        printf("=========== ALUMNOS ===========\n");
-        printf("- %s ", al->nombre);
-        printf("%s ", al->apellido);
-        printf("%s ", al->carrera);
-        printf("%s ", al->semestre);
-        printf("%s ", al->matricula);
-    }
-    */
-    //fclose(archivoAlumno);
     int menu = 1, aux;
 
     while (menu != 0)
