@@ -8,7 +8,7 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <syslog.h>
+//#include <syslog.h>
 
 #define colSize 20
 
@@ -262,15 +262,15 @@ void deleteEntry()
 
 void insert(){
     int op;
+    FILE *fp;
+    char *p = malloc(1024);
+
     printf("Elija la tabla para hacer insert \n 1) Alumnos \n 2) Calificaciones \n");
     scanf("%d", op);
     switch(op)
     {
-        case 1:
+        case 1:;
             Alumno *a;
-            FILE *fp;
-            char *p = malloc(1024);
-
             a = (Alumno*)malloc(sizeof(Alumno));
             fp = fopen("estudiante.bin", "ab");
 
@@ -307,11 +307,8 @@ void insert(){
 
         break;
 
-        case 2:
+        case 2:;
             Calificaciones *c;
-            FILE *fp;
-            char *p = malloc(1024);
-
             c = (Calificaciones*)malloc(sizeof(Calificaciones));
             fp = fopen("calificaciones.bin", "ab");
 
