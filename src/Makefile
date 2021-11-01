@@ -1,8 +1,14 @@
 
 .DEFAULT_GOAL := run
 
-run: 
-	@echo "Running DBMS"
-	gcc main.c -o main.out && ./main.out
+server:
+	@echo "Running DBMS server"
+	gcc server.c -o server.out && ./server.out
 	@echo "Cleaning"
-	rm main.out
+	rm server.out
+
+client: 
+	@echo "Running DBMS client"
+	gcc client.c -o client.out && ./client.out
+	@echo "Cleaning"
+	rm client.out

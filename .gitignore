@@ -54,3 +54,5 @@ dkms.conf
 # Project specific
 k
 *.bin
+
+.vscode
