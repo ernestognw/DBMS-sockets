@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "./definitions.c"
 
 #define colSize 20
 
@@ -21,7 +22,7 @@ void selectCondCalif()
     char *aux = malloc(1024);
     FILE *fp;
     Calificaciones *c;
-    fp = fopen("calificaciones.bin", "rb");
+    fp = fopen(GRADES_TABLE, "rb");
     printf("Elija la columna para hacer la condicion \n 1) Materia \n 2) Matricula \n 3) Calificacion \n");
     scanf("%d", &op);
 
@@ -81,7 +82,7 @@ void selectCondAlumn()
     case 1:
         printf("Teclee el nombre\n");
         scanf("%s", aux);
-        fp = fopen("alumno.bin", "rb");
+        fp = fopen(STUDENTS_TABLE, "rb");
         a = (Alumno *)malloc(sizeof(Alumno));
         while (fread(a, sizeof(Alumno), 1, fp))
         {
@@ -154,7 +155,7 @@ void selectAll()
     case 1:;
         Alumno *a;
         a = (Alumno *)malloc(sizeof(Alumno));
-        fp = fopen("alumno.bin", "rb");
+        fp = fopen(STUDENTS_TABLE, "rb");
         while (fread(a, sizeof(Alumno), 1, fp))
         {
             printf("Nombre: %s Apellido: %s Carrera: %s Semestre: %s Matricula: %s \n", a->nombre, a->apellido, a->carrera, a->semestre, a->matricula);
@@ -165,7 +166,7 @@ void selectAll()
     case 2:;
         Calificaciones *c;
         c = (Calificaciones *)malloc(sizeof(Calificaciones));
-        fp = fopen("calificaciones.bin", "rb");
+        fp = fopen(GRADES_TABLE, "rb");
         while (fread(c, sizeof(Calificaciones), 1, fp))
         {
             printf("Materia: %s Matricula: %s Calificacion: %s \n", c->materia, c->matricula, c->calificacion);
@@ -191,7 +192,7 @@ void deleteEntry()
         scanf("%s", id);
         Alumno *a;
         a = (Alumno *)malloc(sizeof(Alumno));
-        fp = fopen("alumno.bin", "rb");
+        fp = fopen(STUDENTS_TABLE, "rb");
         temp = fopen("tmp.bin", "wb");
         while (fread(a, sizeof(Alumno), 1, fp))
         {
@@ -207,8 +208,8 @@ void deleteEntry()
         fclose(fp);
         fclose(temp);
 
-        remove("alumno.bin");
-        rename("tmp.bin", "alumno.bin");
+        remove(STUDENTS_TABLE);
+        rename("tmp.bin", STUDENTS_TABLE);
 
         break;
 
@@ -218,7 +219,7 @@ void deleteEntry()
         Calificaciones *c;
         c = (Calificaciones *)malloc(sizeof(Calificaciones));
 
-        fp = fopen("calificaciones.bin", "rb");
+        fp = fopen(GRADES_TABLE, "rb");
         temp = fopen("tmp.bin", "wb");
         while (fread(c, sizeof(Calificaciones), 1, fp))
         {
@@ -234,8 +235,8 @@ void deleteEntry()
         fclose(fp);
         fclose(temp);
 
-        remove("calificaciones.bin");
-        rename("tmp.bin", "calificaciones.bin");
+        remove(GRADES_TABLE);
+        rename("tmp.bin", GRADES_TABLE);
 
         break;
     }
@@ -257,7 +258,7 @@ void insert()
     {
     case 1:
 
-        fp = fopen("alumno.bin", "ab");
+        fp = fopen(STUDENTS_TABLE, "ab");
 
         printf("Enter Student name\n");
         scanf("%s", p);
@@ -291,7 +292,7 @@ void insert()
         break;
 
     case 2:
-        fp = fopen("calificaciones.bin", "ab");
+        fp = fopen(GRADES_TABLE, "ab");
         printf("Enter Course name\n");
         scanf("%s", p);
         strcpy(c->materia, p);
