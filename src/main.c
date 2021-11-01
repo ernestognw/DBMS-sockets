@@ -34,13 +34,66 @@ typedef struct calificaciones
 //------------------------------------------------------------
 //hacer otra funcion para la otra tabla
 //acabar el switch con los otros casos
-void selectCondAlumn(char *cond)
+void selectCondCalif()
+{
+    int op;
+    char *aux;
+    FILE *fp;
+    fp = fopen("calificaciones.bin", "rb");
+    printf("Elija la columna para hacer la condicion \n 1) Materia \n 2) Matricula \n 3) Calificacion \n");
+    scanf("%d", &op);
+
+    switch (op)
+    {
+    case 1:
+        printf("Teclee la materia");
+        scanf("%s", &aux);
+        Calificaciones *c;
+        c = (Calificaciones *)malloc(sizeof(Calificaciones));
+        while (fread(c, sizeof(Calificaciones), 1, fp))
+        {
+            if (strcpy(c->materia, aux) == 0)
+            {
+                printf("Matria: %s Matricula: %s Calificacion: %s \n", c->materia, c->matricula, c->calificacion);
+            }
+        }
+        break;
+    case 2:
+        printf("Teclee la matricula");
+        scanf("%s", &aux);
+        Calificaciones *c;
+        c = (Calificaciones *)malloc(sizeof(Calificaciones));
+        while (fread(c, sizeof(Calificaciones), 1, fp))
+        {
+            if (strcpy(c->matricula, aux) == 0)
+            {
+                printf("Matria: %s Matricula: %s Calificacion: %s \n", c->materia, c->matricula, c->calificacion);
+            }
+        }
+        break;
+    case 3:
+        printf("Teclee la calificacion");
+        scanf("%s", &aux);
+        Calificaciones *c;
+        c = (Calificaciones *)malloc(sizeof(Calificaciones));
+        while (fread(c, sizeof(Calificaciones), 1, fp))
+        {
+            if (strcpy(c->calificacion, aux) == 0)
+            {
+                printf("Matria: %s Matricula: %s Calificacion: %s \n", c->materia, c->matricula, c->calificacion);
+            }
+        }
+        break;
+    }
+}
+
+void selectCondAlumn()
 {
     int op;
     char *aux;
     FILE *fp;
     fp = fopen("alumno.bin", "rb");
-    printf("Elija la columna para hacer la condicion \n 1) Nombre \n 2) Apellido \n 3) Carrera \n 4) Semestre \n 5) Matricula");
+    printf("Elija la columna para hacer la condicion \n 1) Nombre \n 2) Apellido \n 3) Carrera \n 4) Semestre \n 5) Matricula \n");
     scanf("%d", &op);
 
     switch (op)
@@ -57,10 +110,58 @@ void selectCondAlumn(char *cond)
                 printf("Nombre: %s Apellido: %s Carrera: %s Semestre: %s Matricula: %s \n", a->nombre, a->apellido, a->carrera, a->semestre, a->matricula);
             }
         }
-
         break;
-
-    default:
+    case 2:
+        printf("Teclee el apellido");
+        scanf("%s", &aux);
+        Alumno *a;
+        a = (Alumno *)malloc(sizeof(Alumno));
+        while (fread(a, sizeof(Alumno), 1, fp))
+        {
+            if (strcpy(a->apellido, aux) == 0)
+            {
+                printf("Nombre: %s Apellido: %s Carrera: %s Semestre: %s Matricula: %s \n", a->nombre, a->apellido, a->carrera, a->semestre, a->matricula);
+            }
+        }
+        break;
+    case 3:
+        printf("Teclee el carrera");
+        scanf("%s", &aux);
+        Alumno *a;
+        a = (Alumno *)malloc(sizeof(Alumno));
+        while (fread(a, sizeof(Alumno), 1, fp))
+        {
+            if (strcpy(a->carrera, aux) == 0)
+            {
+                printf("Nombre: %s Apellido: %s Carrera: %s Semestre: %s Matricula: %s \n", a->nombre, a->apellido, a->carrera, a->semestre, a->matricula);
+            }
+        }
+        break;
+    case 4:
+        printf("Teclee el semestre");
+        scanf("%s", &aux);
+        Alumno *a;
+        a = (Alumno *)malloc(sizeof(Alumno));
+        while (fread(a, sizeof(Alumno), 1, fp))
+        {
+            if (strcpy(a->semestre, aux) == 0)
+            {
+                printf("Nombre: %s Apellido: %s Carrera: %s Semestre: %s Matricula: %s \n", a->nombre, a->apellido, a->carrera, a->semestre, a->matricula);
+            }
+        }
+        break;
+    case 5:
+        printf("Teclee el matricula");
+        scanf("%s", &aux);
+        Alumno *a;
+        a = (Alumno *)malloc(sizeof(Alumno));
+        while (fread(a, sizeof(Alumno), 1, fp))
+        {
+            if (strcpy(a->matricula, aux) == 0)
+            {
+                printf("Nombre: %s Apellido: %s Carrera: %s Semestre: %s Matricula: %s \n", a->nombre, a->apellido, a->carrera, a->semestre, a->matricula);
+            }
+        }
         break;
     }
     fclose(fp);
@@ -69,7 +170,7 @@ void selectCondAlumn(char *cond)
 void selectAll()
 {
     int op;
-    printf("Elija la tabla para imprimir \n 1) Alumnos \n 2) Calificaciones");
+    printf("Elija la tabla para imprimir \n 1) Alumnos \n 2) Calificaciones \n");
     scanf("%d", &op);
     switch (op)
     {
@@ -103,16 +204,14 @@ void selectAll()
     }
 }
 
-//----------------------------------------------
-//Cambiar structs
-void deleteEntry(char *name)
+void deleteEntry()
 {
     int op;
-    printf("Elija la tabla para hacer delete \n 1) Alumnos \n 2) Calificaciones");
+    printf("Elija la tabla para hacer delete \n 1) Alumnos \n 2) Calificaciones \n");
     scanf("%d", &op);
-    switch(op)
+    switch (op)
     {
-        case 1:
+    case 1:
         printf("Ingrese la matricula que quiera eliminar:\n");
         char *id = malloc(1024);
         scanf("%s", id);
@@ -120,28 +219,28 @@ void deleteEntry(char *name)
         a = (Alumno *)malloc(sizeof(Alumno));
         FILE *fp;
         FILE *temp;
-         fp = fopen("alumno.bin", "rb");
-         temp = fopen("tmp.bin", "wb");
-         while (fread(a, sizeof(Alumno), 1, fp))
-         {
-        if (strcmp(a->matricula, id) == 0)
+        fp = fopen("alumno.bin", "rb");
+        temp = fopen("tmp.bin", "wb");
+        while (fread(a, sizeof(Alumno), 1, fp))
         {
-            printf("The row has been deleted.\n\n");
+            if (strcmp(a->matricula, id) == 0)
+            {
+                printf("The row has been deleted.\n\n");
+            }
+            else
+            {
+                fwrite(a, sizeof(Calificaciones), 1, temp);
+            }
         }
-        else
-        {
-            fwrite(a, sizeof(Calificaciones), 1, temp);
-        }
-    }
-    fclose(fp);
-    fclose(temp);
+        fclose(fp);
+        fclose(temp);
 
-    remove("alumno.bin");
-    rename("tmp.bin", "alumno.bin");
+        remove("alumno.bin");
+        rename("tmp.bin", "alumno.bin");
 
         break;
 
-        case 2:
+    case 2:
         printf("Ingrese la matricula que quiera eliminar:\n");
         char *id = malloc(1024);
         scanf("%s", id);
@@ -149,29 +248,27 @@ void deleteEntry(char *name)
         c = (Calificaciones *)malloc(sizeof(Calificaciones));
         FILE *fp;
         FILE *temp;
-         fp = fopen("calificaciones.bin", "rb");
-         temp = fopen("tmp.bin", "wb");
-         while (fread(c, sizeof(Calificaciones), 1, fp))
-         {
-        if (strcmp(c->matricula, id) == 0)
+        fp = fopen("calificaciones.bin", "rb");
+        temp = fopen("tmp.bin", "wb");
+        while (fread(c, sizeof(Calificaciones), 1, fp))
         {
-            printf("The row has been deleted.\n\n");
+            if (strcmp(c->matricula, id) == 0)
+            {
+                printf("The row has been deleted.\n\n");
+            }
+            else
+            {
+                fwrite(a, sizeof(Calificaciones), 1, temp);
+            }
         }
-        else
-        {
-            fwrite(a, sizeof(Calificaciones), 1, temp);
-        }
-    }
-    fclose(fp);
-    fclose(temp);
+        fclose(fp);
+        fclose(temp);
 
-    remove("calificaciones.bin");
-    rename("tmp.bin", "calificaciones.bin");
+        remove("calificaciones.bin");
+        rename("tmp.bin", "calificaciones.bin");
 
         break;
     }
-   
-   
 }
 
 int main()
@@ -187,7 +284,7 @@ int main()
     FILE *archivoCalificaciones;
 
     archivoAlumno = fopen("alumno.bin", "wb");
-
+    /*
     // ESTO ES PARA INICIAR EL ARCHIVO alumno.bin ---> Ya ustedes hacen en insert y demás
     strcpy(a.nombre, "Karina");
     strcpy(a.apellido, "Amador");
@@ -215,7 +312,43 @@ int main()
         printf("%s ", al->semestre);
         printf("%s ", al->matricula);
     }
+    */
     fclose(archivoAlumno);
+    int menu = 1, aux;
+
+    while (menu != 0)
+    {
+        printf("Menu: \n 1) Select all \n 2) Select con condicion \n 3) Insertar \n 4) Borrar \n 5) Join \n 6) Salir \n");
+        scanf("%d", &menu);
+        switch (menu)
+        {
+        case 1:
+            selectAll();
+            break;
+        case 2:
+            printf("Elija la tabla en la cual quiere hacer el select: \n 1) Alumnos \n 2) Calificaciones \n");
+            scanf("%d", &aux);
+            switch (aux)
+            {
+            case 1:
+                selectCondAlumn();
+                break;
+            case 2:
+                selectCondCalif();
+                break;
+            }
+            break;
+        case 3:
+            //instert
+            break;
+        case 4:
+            deleteEntry();
+            break;
+        case 5:
+            //join
+            break;
+        }
+    }
 
     return 0;
 }
