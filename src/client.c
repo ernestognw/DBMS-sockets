@@ -39,12 +39,10 @@ int authenticate(int sockfd)
         printf("Introduzca username: ");
         scanf("%s", username);
         sendMessage(sockfd, username);
-        fflush(stdin);
 
         printf("Introduzca password: ");
         scanf("%s", password);
         strcpy(reply, sendMessage(sockfd, password));
-        fflush(stdin);
 
         if (strcmp(reply, FAILED_AUTH) == 0)
         {

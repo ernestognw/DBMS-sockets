@@ -3,12 +3,12 @@
 
 server:
 	@echo "Running DBMS server"
-	gcc servidor.c -o servidor.out && ./servidor.out
+	gcc server.c -o server.out && ./server.out
 	@echo "Cleaning"
-	rm servidor.out
+	rm server.out
 
 client: 
 	@echo "Running DBMS client"
-	gcc cliente.c -o cliente.out && ./cliente.out
+	gcc client.c -o client.out && ./client.out
 	@echo "Cleaning"
-	rm cliente.out
+	rm client.out
