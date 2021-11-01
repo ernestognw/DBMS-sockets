@@ -406,7 +406,7 @@ int main()
             }
             break;
         case 3:
-            //instert
+            insert();
             break;
         case 4:
             deleteEntry();
