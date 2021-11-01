@@ -1,2 +1,2 @@
-docker build . -t password-manager
-docker run -it password-manager /bin/bash
+docker build . -t dbms
+docker run -it dbms /bin/bash

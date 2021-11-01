@@ -1,20 +1,15 @@
-/*
-	C socket server example
-*/
-
 #include <stdio.h>
-#include <string.h> //strlen
-#include <sys/socket.h>
-#include <arpa/inet.h> //inet_addr
-#include <unistd.h>    //write
-
-#include <stdlib.h>
-#include <signal.h>
 #include <unistd.h>
-#include <sys/types.h>
+#include <signal.h>
 #include <sys/stat.h>
 #include <syslog.h>
-
+#include <netdb.h>
+#include <netinet/in.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include "./definitions.c"
 
 static void daemonize()
 {
@@ -42,8 +37,6 @@ static void daemonize()
     if (pid > 0)
         exit(EXIT_SUCCESS);
 
-    umask(027);
-
     int x;
     for (x = sysconf(_SC_OPEN_MAX); x >= 0; x--)
     {
@@ -51,107 +44,88 @@ static void daemonize()
     }
 }
 
-int main(int argc, char *argv[])
+// Function designed for chat between client and server.
+void func(int sockfd)
 {
-    daemonize();
-    int socket_desc, client_sock, c, read_size, read_size2;
-    struct sockaddr_in server, client;
-    char client_message[2000];
-    char client_user[30];
-    char client_password[20];
-    char correctUser[] = "Karina";
+    char username[MAX];
+    char password[MAX];
+    char correctUsername[] = "Karina";
     char correctPassword[] = "123456";
-
-    //Create socket
-    socket_desc = socket(AF_INET, SOCK_STREAM, 0);
-    if (socket_desc == -1)
+    int tries = 0;
+    while (tries < 3)
     {
-        printf("Could not create socket");
-    }
-    puts("Socket created");
+        recv(sockfd, username, MAX, 0);
+        recv(sockfd, password, MAX, 0);
 
-    //Prepare the sockaddr_in structure
-    server.sin_family = AF_INET;
-    server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = htons(8888);
-
-    //Bind
-    if (bind(socket_desc, (struct sockaddr *)&server, sizeof(server)) < 0)
-    {
-        //print the error message
-        perror("bind failed. Error");
-        return 1;
-    }
-    puts("bind done");
-
-    //Listen
-    listen(socket_desc, 3);
-
-    //Accept and incoming connection
-    puts("Waiting for incoming connections...");
-    c = sizeof(struct sockaddr_in);
-
-    //accept connection from an incoming client
-    client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t *)&c);
-    if (client_sock < 0)
-    {
-        perror("accept failed");
-        return 1;
-    }
-    puts("Connection accepted");
-
-    int contador = 0;
-    while (contador < 3)
-    {
-        //1. recibir el usuario
-        read_size = recv(client_sock, client_user, 30, 0);
-        //2. recibir password
-        read_size2 = recv(client_sock, client_password, 20, 0);
-
-        if (read_size == 0)
-        {
-            // puts("Client disconnected");
-            // // fflush(stdout);
-            return 1;
-        }
-        else if (read_size == -1)
-        {
-            // perror("recv failed");
-            return 1;
-        }
-
-        //3. checar si son correctos
-        if (strcmp(client_user, correctUser) == 0 && strcmp(client_password, correctPassword) == 0)
-        {
-            //3.1 SISI continuar con las instrucciones del menú
-            write(client_sock, "Welcome", strlen("Welcome"));
-            break;
-            //3.2 SINO
-        }
+        if (strcmp(username, correctUsername) == 0 && strcmp(password, correctPassword) == 0)
+            write(sockfd, PASSED_AUTH, strlen(PASSED_AUTH));
         else
         {
-
-            write(client_sock, "Username or password is incorrect... Try again...", strlen("Username or password is incorrect... Try again..."));
-            //3.2.1 Sumar al contador
-            contador++;
-            //3.2.2 Checar si el contador ya se paso
-            if (contador == 3)
-            {
-                return 1;
-
-                //3.2.3 Regresar al inicio
-            }
+            write(sockfd, FAILED_AUTH, strlen(FAILED_AUTH));
+            tries++;
         }
-
-        ////////// ESTO SIRVE PARA CUANDO QUIERAN ESTABLECER COMUNICACION Y DAR INSTRUCCIONES DE INSERTAR ETC /////
-
-        //Receive a message from client
-        // while( (read_size = recv(client_sock , client_message , 2000 , 0)) > 0 )
-        // {
-        // 	//Send the message back to client
-        // 	write(client_sock , client_message , strlen(client_message));
-        // }
     }
+}
+
+// Driver function
+int main(int argc, char *argv[])
+{
+    printf("Starting daemonize\n");
+    daemonize();
+
+    int sockfd, connfd, len;
+    SAIN servaddr, cli;
+
+    // Socket create and verification
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd == -1)
+    {
+        printf("Socket creation failed...\n");
+        exit(1);
+    }
+    else
+        printf("Socket successfully created..\n");
+    bzero(&servaddr, sizeof(servaddr));
+
+    // Assign IP, PORT
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    servaddr.sin_port = htons(PORT);
+
+    // Binding newly created socket to given IP and verification
+    if ((bind(sockfd, (SA *)&servaddr, sizeof(servaddr))) != 0)
+    {
+        printf("Socket bind failed...\n");
+        exit(1);
+    }
+    else
+        printf("Socket successfully binded..\n");
+
+    // Now server is ready to listen and verification
+    if ((listen(sockfd, 5)) != 0)
+    {
+        printf("Listen failed...\n");
+        exit(1);
+    }
+    else
+        printf("Server listening...\n");
+    len = sizeof(SAIN);
+
+    // Accept the data packet from client and verification
+    connfd = accept(sockfd, (SA *)&cli, (socklen_t *)&len);
+    if (connfd < 0)
+    {
+        printf("Server accept failed...\n");
+        exit(1);
+    }
+    else
+        printf("Server accept the client...\n");
+
+    // Function for chatting between client and server
+    func(connfd);
+
+    // After chatting close the socket
+    close(sockfd);
 
     return 0;
 }
