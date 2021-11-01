@@ -260,84 +260,80 @@ void deleteEntry()
     }
 }
 
-void insert(){
+void insert()
+{
     int op;
     FILE *fp;
     char *p = malloc(1024);
     Alumno *a;
-    a = (Alumno*)malloc(sizeof(Alumno));
+    a = (Alumno *)malloc(sizeof(Alumno));
     Calificaciones *c;
-    c = (Calificaciones*)malloc(sizeof(Calificaciones));
+    c = (Calificaciones *)malloc(sizeof(Calificaciones));
 
     printf("Elija la tabla para hacer insert \n 1) Alumnos \n 2) Calificaciones \n");
     scanf("%d", &op);
-    switch(op)
+    switch (op)
     {
-        case 1:
-            
-            fp = fopen("alumno.bin", "ab");
+    case 1:
 
+        fp = fopen("alumno.bin", "ab");
 
-            printf("Enter Student name\n");
-            scanf("%s", p);
-            strcpy(a->nombre, p);
-            fflush(stdin);
+        printf("Enter Student name\n");
+        scanf("%s", p);
+        strcpy(a->nombre, p);
+        fflush(stdin);
 
+        printf("Enter Student lastname\n");
+        scanf("%s", p);
+        strcpy(a->apellido, p);
+        fflush(stdin);
 
-            printf("Enter Student lastname\n");
-            scanf("%s", p);
-            strcpy(a->apellido, p);
-            fflush(stdin);
+        printf("Enter Student carrer\n");
+        scanf("%s", p);
+        strcpy(a->carrera, p);
+        fflush(stdin);
 
-            printf("Enter Student carrer\n");
-            scanf("%s", p);
-            strcpy(a->carrera, p);
-            fflush(stdin);
+        printf("Enter Student semester\n");
+        scanf("%s", p);
+        strcpy(a->semestre, p);
+        fflush(stdin);
 
-            printf("Enter Student semester\n");
-            scanf("%s", p);
-            strcpy(a->semestre, p);
-            fflush(stdin);
+        printf("Enter Student id\n");
+        scanf("%s", p);
+        strcpy(a->matricula, p);
+        fflush(stdin);
 
-            printf("Enter Student id\n");
-            scanf("%s", p);
-            strcpy(a->matricula, p);
-            fflush(stdin);
+        fwrite(a, sizeof(Alumno), 1, fp);
 
-            fwrite(a, sizeof(Alumno), 1, fp);
-
-            fclose(fp);
+        fclose(fp);
 
         break;
 
-        case 2:
-            printf("Holi wilis");
-            fp = fopen("calificaciones.bin", "ab");
+    case 2:
+        printf("Holi wilis");
+        fp = fopen("calificaciones.bin", "ab");
 
+        printf("Enter Course name\n");
+        scanf("%s", p);
+        strcpy(c->materia, p);
+        fflush(stdin);
 
-            printf("Enter Course name\n");
-            scanf("%s", p);
-            strcpy(c->materia, p);
-            fflush(stdin);
+        printf("Enter Student id\n");
+        scanf("%s", p);
+        strcpy(c->matricula, p);
+        fflush(stdin);
 
+        printf("Enter Course grade\n");
+        scanf("%s", p);
+        strcpy(c->calificacion, p);
+        fflush(stdin);
 
-            printf("Enter Student id\n");
-            scanf("%s", p);
-            strcpy(c->matricula, p);
-            fflush(stdin);
+        fwrite(c, sizeof(Calificaciones), 1, fp);
 
-            printf("Enter Course grade\n");
-            scanf("%s", p);
-            strcpy(c->calificacion, p);
-            fflush(stdin);
-
-            fwrite(c, sizeof(Calificaciones), 1, fp);
-
-            fclose(fp);
+        fclose(fp);
 
         break;
     }
-    
 }
 
 int main()
