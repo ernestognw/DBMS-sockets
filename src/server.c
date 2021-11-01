@@ -44,8 +44,7 @@ static void daemonize()
     }
 }
 
-// Function designed for chat between client and server.
-void func(int sockfd)
+int authenticate(int sockfd)
 {
     char username[MAX];
     char password[MAX];
@@ -58,13 +57,17 @@ void func(int sockfd)
         recv(sockfd, password, MAX, 0);
 
         if (strcmp(username, correctUsername) == 0 && strcmp(password, correctPassword) == 0)
+        {
             write(sockfd, PASSED_AUTH, strlen(PASSED_AUTH));
+            return 1;
+        }
         else
         {
             write(sockfd, FAILED_AUTH, strlen(FAILED_AUTH));
             tries++;
         }
     }
+    return 0;
 }
 
 // Driver function
@@ -122,7 +125,11 @@ int main(int argc, char *argv[])
         printf("Server accept the client...\n");
 
     // Function for chatting between client and server
-    func(connfd);
+    int authenticated = func(connfd);
+
+    if (authenticated)
+    {
+    }
 
     // After chatting close the socket
     close(sockfd);

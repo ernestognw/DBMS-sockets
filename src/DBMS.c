@@ -4,16 +4,14 @@
 #include <time.h>
 #include "./definitions.c"
 
-#define colSize 20
-
 typedef struct alumno
 {
-    char nombre[colSize], apellido[colSize], carrera[colSize], semestre[colSize], matricula[colSize];
+    char nombre[COL_SIZE], apellido[COL_SIZE], carrera[COL_SIZE], semestre[COL_SIZE], matricula[COL_SIZE];
 } Alumno;
 
 typedef struct calificaciones
 {
-    char materia[colSize], matricula[colSize], calificacion[colSize];
+    char materia[COL_SIZE], matricula[COL_SIZE], calificacion[COL_SIZE];
 } Calificaciones;
 
 void selectCondCalif()
@@ -37,7 +35,7 @@ void selectCondCalif()
         {
             if (strcmp(c->materia, aux) == 0)
             {
-                printf("Matria: %s Matricula: %s Calificacion: %s \n", c->materia, c->matricula, c->calificacion);
+                printf("Materia: %s Matricula: %s Calificacion: %s \n", c->materia, c->matricula, c->calificacion);
             }
         }
         break;
@@ -49,7 +47,7 @@ void selectCondCalif()
         {
             if (strcmp(c->matricula, aux) == 0)
             {
-                printf("Matria: %s Matricula: %s Calificacion: %s \n", c->materia, c->matricula, c->calificacion);
+                printf("Materia: %s Matricula: %s Calificacion: %s \n", c->materia, c->matricula, c->calificacion);
             }
         }
         break;
@@ -61,7 +59,7 @@ void selectCondCalif()
         {
             if (strcmp(c->calificacion, aux) == 0)
             {
-                printf("Matria: %s Matricula: %s Calificacion: %s \n", c->materia, c->matricula, c->calificacion);
+                printf("Materia: %s Matricula: %s Calificacion: %s \n", c->materia, c->matricula, c->calificacion);
             }
         }
         break;
@@ -74,6 +72,7 @@ void selectCondAlumn()
     char *aux = malloc(1024);
     FILE *fp;
     Alumno *a;
+    fp = fopen(STUDENTS_TABLE, "rb");
     printf("Elija la columna para hacer la condicion \n 1) Nombre \n 2) Apellido \n 3) Carrera \n 4) Semestre \n 5) Matricula \n");
     scanf("%d", &op);
 
@@ -82,7 +81,6 @@ void selectCondAlumn()
     case 1:
         printf("Teclee el nombre\n");
         scanf("%s", aux);
-        fp = fopen(STUDENTS_TABLE, "rb");
         a = (Alumno *)malloc(sizeof(Alumno));
         while (fread(a, sizeof(Alumno), 1, fp))
         {
@@ -129,7 +127,7 @@ void selectCondAlumn()
         }
         break;
     case 5:
-        printf("Teclee el matricula\n");
+        printf("Teclee la matricula\n");
         scanf("%s", aux);
         a = (Alumno *)malloc(sizeof(Alumno));
         while (fread(a, sizeof(Alumno), 1, fp))
@@ -188,7 +186,6 @@ void deleteEntry()
     {
     case 1:
         printf("Ingrese la matricula que quiera eliminar:\n");
-
         scanf("%s", id);
         Alumno *a;
         a = (Alumno *)malloc(sizeof(Alumno));
@@ -218,7 +215,6 @@ void deleteEntry()
         scanf("%s", id);
         Calificaciones *c;
         c = (Calificaciones *)malloc(sizeof(Calificaciones));
-
         fp = fopen(GRADES_TABLE, "rb");
         temp = fopen("tmp.bin", "wb");
         while (fread(c, sizeof(Calificaciones), 1, fp))
@@ -298,11 +294,6 @@ void insert()
         strcpy(c->materia, p);
         fflush(stdin);
 
-        printf("Enter Course name\n");
-        scanf("%s", p);
-        strcpy(c->materia, p);
-        fflush(stdin);
-
         printf("Enter Student id\n");
         scanf("%s", p);
         strcpy(c->matricula, p);
@@ -318,6 +309,36 @@ void insert()
         fclose(fp);
 
         break;
+    }
+}
+
+void join()
+{
+    FILE *fpStudents;
+    FILE *fpGrades;
+    char *aux = malloc(1024);
+    Alumno *a;
+    a = (Alumno *)malloc(sizeof(Alumno));
+    Calificaciones *c;
+    c = (Calificaciones *)malloc(sizeof(Calificaciones));
+
+    fpStudents = fopen(STUDENTS_TABLE, "rb");
+
+    printf("Teclee la matricula\n");
+    scanf("%s", aux);
+    while (fread(a, sizeof(Alumno), 1, fpStudents))
+    {
+        if (strcmp(a->matricula, aux) == 0)
+        {
+            fpGrades = fopen(GRADES_TABLE, "rb");
+            while (fread(c, sizeof(Calificaciones), 1, fpGrades))
+            {
+                if (strcmp(c->matricula, aux) == 0)
+                {
+                    printf("Nombre: %s Apellido: %s Carrera: %s Semestre: %s Matricula: %s Materia: %s Calificacion: %s \n\n", a->nombre, a->apellido, a->carrera, a->semestre, a->matricula, c->materia, c->calificacion);
+                }
+            }
+        }
     }
 }
 
@@ -356,7 +377,7 @@ int main()
             deleteEntry();
             break;
         case 5:
-            //join
+            join();
             break;
         }
     }

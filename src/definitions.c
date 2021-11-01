@@ -3,6 +3,7 @@
 #define STUDENTS_TABLE "students.bin"
 #define GRADES_TABLE "grades.bin"
 #define INET_ADDR "127.0.0.1"
+#define COL_SIZE 20
 #define MAX 2000
 #define PORT 8080
 #define SA struct sockaddr
